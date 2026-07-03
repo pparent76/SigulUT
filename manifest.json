@@ -2,7 +2,7 @@
   "name": "signalut.pparent",
   "description": "Signal desktop for Ubuntu Touch with responsive design",
   "architecture": "@CLICK_ARCH@",
-  "title": "Sigma UT",
+  "title": "Sigul UT",
   "hooks": {
     "signallauncher": {
       "apparmor": "signalut.apparmor",
