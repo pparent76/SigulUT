@@ -7,7 +7,6 @@
     "signallauncher": {
       "apparmor": "signalut.apparmor",
       "desktop": "signalut.desktop",
-      "content-hub": "content-hub.json"
     },
     "push": {
       "apparmor": "signalut-push.apparmor",
