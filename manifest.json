@@ -6,14 +6,14 @@
   "hooks": {
     "signallauncher": {
       "apparmor": "signalut.apparmor",
-      "desktop": "signalut.desktop",
+      "desktop": "signalut.desktop"
     },
     "push": {
       "apparmor": "signalut-push.apparmor",
       "push-helper": "signalut-push-helper.json"
     }
   },
-  "version": "8.17.0-1",
+  "version": "8.18.0-1",
   "maintainer": "Pierre Parent <pro@pierre-parent.fr>",
   "framework": "ubuntu-touch-24.04-1.x"
 }

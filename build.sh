@@ -18,7 +18,7 @@ INSTALL_DIR="${BUILD_DIR}/install"
 echo "[1/10] Download Signal-Desktop from github"
 
 cd ${BUILD_DIR}
-signal_download_url=https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v8.17.0.tar.gz
+signal_download_url=https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v8.18.0.tar.gz
 
 if [ ! -e "Signal-Desktop" ]; then
     mkdir -p "Signal-Desktop"
@@ -316,13 +316,12 @@ echo "Copying libnotify"
 cp ${BUILD_DIR}/libnotify/libnotify-0.8.3/obj-aarch64-linux-gnu/libnotify/* $INSTALL_DIR/lib/aarch64-linux-gnu/ || true
 
 echo "Copying logos..."
-cp ${BUILD_DIR}/icon.png "$INSTALL_DIR/"
-cp ${BUILD_DIR}/icon-splash.png "$INSTALL_DIR/"
+cp ${ROOT}/icon.png "$INSTALL_DIR/"
+cp ${ROOT}/icon-splash.png "$INSTALL_DIR/"
 
 echo "Copying app files..."
 cp ${ROOT}/signalut.desktop "$INSTALL_DIR/"
 cp ${ROOT}/manifest.json "$INSTALL_DIR/"
-cp ${ROOT}/content-hub.json "$INSTALL_DIR/"
 cp ${ROOT}/signalut.apparmor "$INSTALL_DIR/"
 cp ${ROOT}/launcher.sh "$INSTALL_DIR/"
 cp ${ROOT}/pushexec "$INSTALL_DIR/"
