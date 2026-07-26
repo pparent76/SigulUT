@@ -112,11 +112,18 @@ MainView {
                     Timer {
                         id: blurTimer
                         interval: 500   
-                        repeat: false
+                        repeat: true
 
                         onTriggered: {
-                            config.keyboardHeight= UbuntuApplication.inputMethod.visible ?UbuntuApplication.inputMethod.keyboardRectangle.height: 0
+                            
+                        config.keyboardHeight= UbuntuApplication.inputMethod.visible ?UbuntuApplication.inputMethod.keyboardRectangle.height: 0
+                        if (config.keyboardHeight>0) {
+                            blurTimer.stop()
+                            blurTimer.repeat=false
                             focusStealer.forceActiveFocus()
+                        }
+                            
+                            
                         }
                     }
                 }
