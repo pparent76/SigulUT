@@ -3,7 +3,7 @@ index a5e0a20ef..51014a823 100644
 9a10,11
 > import { execFile } from 'node:child_process'
 > import { readFile, stat } from 'node:fs/promises';
-3241a3244,3310
+3240a3243,3309
 > //----------------------------------------------------------
 > //       Function added for Ubuntu Touch (contentHub)
 > //----------------------------------------------------------
@@ -90,7 +90,7 @@ diff --git a/ts/windows/main/start.preload.ts b/ts/windows/main/start.preload.ts
 index a5e0a20ef..51014a823 100644
 32a33
 > import { setupFileInputPicker } from './contentHub.preload.ts';
-34a36,37
+40a42,43
 > 
 > setupFileInputPicker();
 

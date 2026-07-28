@@ -47,6 +47,97 @@ var lastFocusEl=null;
 var needToShowChatWindow=0;
 var firstChatLoad=1;
 
+//-------------------------------------------------------------------------
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//  SECTION0: Initial overlays ( Settings gear, and Notifications howto)
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//-------------------------------------------------------------------------
+
+function showGear() {
+const b = document.createElement("button");
+b.id = "gear";
+b.innerHTML = `<svg viewBox="0 0 24 24" width="30" fill="currentColor">
+  <path d="M19.4 13a7.8 7.8 0 0 0 .1-1 7.8 7.8 0 0 0-.1-1l2.1-1.6-2-3.4-2.5 1a8 8 0 0 0-1.7-1L15 3h-4l-.4 2.9a8 8 0 0 0-1.7 1l-2.5-1-2 3.4L6.6 11a7.8 7.8 0 0 0-.1 1 7.8 7.8 0 0 0 .1 1l-2.1 1.6 2 3.4 2.5-1a8 8 0 0 0 1.7 1l.4 2.9h4l.4-2.9a8 8 0 0 0 1.7-1l2.5 1 2-3.4zM13 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+</svg>`;
+b.style.cssText = "position:fixed;right:5px;top:5px;z-index:999999;width:60px;height:60px;cursor:pointer;color:#000";
+b.onclick = () => open("https://access-settings", "_blank");
+document.documentElement.append(b);
+}
+
+function hideGear() {
+  document.querySelector("#gear")?.remove();
+}
+
+function showNotificationMessage() {
+  const box = document.createElement("div");
+  box.id = "notification-message";
+
+  box.style.cssText = `
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 999999;
+    text-align: center;
+    font-family: sans-serif;
+    color: black;
+  `;
+
+  const bell = document.createElement("div");
+  bell.innerHTML = `
+  <center>
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="currentColor"
+    >
+      <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6v-5a7 7 0 0 0-5-6.71V3a2 2 0 0 0-4 0v1.29A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z"/>
+    </svg>
+  </center>
+  `;
+  bell.style.cssText = `
+    margin-bottom: 8px;
+    line-height: 0;
+    color: black;
+  `;
+
+  const text = document.createElement("div");
+  text.textContent = "This application supports notifications";
+  text.style.cssText = `
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+  `;
+
+  const link = document.createElement("a");
+  link.textContent = "show me how!";
+  link.href = "https://access-notifications-howto";
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.style.cssText = `
+    display: block;
+    margin-top: 4px;
+    color: #37a5e8;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-decoration: underline;
+  `;
+
+  box.append(bell, text, link);
+  document.documentElement.appendChild(box);
+}
+
+function hideNotificationMessage() {
+  document.querySelector("#notification-message")?.remove();
+}
+
+showNotificationMessage();
+showGear();
+
+
 //-----------------------------------------------------
 //Request by default webnofications permission
 //-----------------------------------------------------
@@ -112,6 +203,13 @@ function removeHiddenCSS() {
 //----------------------------------------------------------------------
 function main(){
   console.log("Call main function")
+  
+  document.querySelector("#gear").style.opacity = "0.01";
+  document.querySelector("#notification-message").style.opacity = "0.01";
+  setTimeout( () => {
+  hideGear();
+  hideNotificationMessage();
+  },1200);
   
   try{
   addCss(".NavSidebar { transition: transform 0.25s ease-in-out !important ; min-width: 100% !important; position: absolute; z-index:1000; }")

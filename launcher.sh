@@ -30,6 +30,21 @@ fi
 export PATH=$PWD/bin:$PATH
 utils/mkdir.sh /home/phablet/.cache/signalut.pparent/
 
+##################################################################################################
+#Temporary hack to recalibrate Keyboard height for users that have recently migrated to 24.04-2.0
+##################################################################################################
+while read p; do
+  if [[ "$p" == *"hasUpdateTo240420="* ]]; then  hasUpdateTo240420=$p; fi
+done <  /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
+
+echo "2e5ac3f9522ed7ec26105aa327d16f21  /lib/aarch64-linux-gnu/liblomiri-private.so"| md5sum -c -
+if [ "$?" -eq "0" ]&& [ "$hasUpdateTo240420" = "" ]; then
+        utils/rm.sh /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
+        echo "[UpdateSettings]"  > /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
+        echo "hasUpdateTo240420=yes" >> /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
+fi
+##################################################################################################
+
 #Read micstate in conf
 while read p; do
   if [[ "$p" == *"microState="* ]]; then  micstate=$p; fi
@@ -56,20 +71,26 @@ if { [[ "$micstate" != *"microState=1"* ]] && [[ "$micstate" != *"microState=4"*
             fi
         done
 fi
-
-#Read micstate in conf
-while read p; do
-  if [[ "$p" == *"keyboardHeight="* ]]; then keyboardHeight="${p#keyboardHeight=}" ; fi
-done <  /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
-
 for file in /home/phablet/.cache/signalut.pparent/downloads/* ; do
     utils/rm.sh $file
 done
 
+#Read micstate in conf
+while read p; do
+  if [[ "$p" == *"keyboardHeight="* ]]; then keyboardHeight="${p#keyboardHeight=}" ; fi
+  if [[ "$p" == *"appScaling="* ]]; then appScaling="${p#appScaling=}" ; fi  
+done <  /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
 
-scale=$(./utils/get-scale.sh 2>/dev/null )
+if [ "$appScaling" = "" ]; then
+    appScaling=$(./utils/get-scale.sh 2>/dev/null )
+    echo "[AppSettings]"  >> /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
+    echo "appScaling=$appScaling" >> /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
+    echo "defaultAppScaling=$appScaling" >> /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf  
+fi
 
-dpioptions="--high-dpi-support=1 --force-device-scale-factor=$scale --keyboard-height=$keyboardHeight"
+scaling="$((appScaling / 100)).$(printf '%02d' "$((appScaling % 100))")"
+
+dpioptions="--high-dpi-support=1 --force-device-scale-factor=$scaling --keyboard-height=$keyboardHeight"
 sandboxoptions="--no-sandbox"
 gpuoptions="--use-gl=egl --enable-gpu-rasterization --enable-zero-copy --ignore-gpu-blocklist --enable-features=UseSkiaRenderer,VaapiVideoDecoder --disable-frame-rate-limit --disable-gpu-vsync --enable-oop-rasterization"
 

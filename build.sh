@@ -18,7 +18,7 @@ INSTALL_DIR="${BUILD_DIR}/install"
 echo "[1/10] Download Signal-Desktop from github"
 
 cd ${BUILD_DIR}
-signal_download_url=https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v8.18.0.tar.gz
+signal_download_url=https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v8.20.0.tar.gz
 
 if [ ! -e "Signal-Desktop" ]; then
     mkdir -p "Signal-Desktop"
@@ -355,6 +355,11 @@ mkdir -p $INSTALL_DIR/utils/upload-helper/Pparent/UploadHelper
 cp ${BUILD_DIR}/upload-helper/qml-upload-helper-module/build/libUploadHelperPlugin.so $INSTALL_DIR/utils/upload-helper/Pparent/UploadHelper/
 cp ${BUILD_DIR}/upload-helper/qml-upload-helper-module/qmldir $INSTALL_DIR/utils/upload-helper/Pparent/UploadHelper/
 
+mkdir $INSTALL_DIR/utils/settings/
+cp -r ${ROOT}/utils/settings/* $INSTALL_DIR/utils/settings/
+
+mkdir $INSTALL_DIR/utils/notifications-howto/
+cp -r ${ROOT}/utils/notifications-howto/* $INSTALL_DIR/utils/notifications-howto/
 
 mkdir -p $INSTALL_DIR/utils/mic-permission-requester/AudioWriter/ || true
 cp ${BUILD_DIR}/mic-permission-requester/AudioModule/libaudiowriter.so $INSTALL_DIR/utils/mic-permission-requester/AudioWriter/
