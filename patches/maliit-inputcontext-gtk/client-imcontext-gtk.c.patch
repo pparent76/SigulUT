@@ -49,7 +49,7 @@ index e26ce37..40e900d 100644
          g_signal_emit_by_name(focused_im_context, "preedit-changed");
          g_signal_emit_by_name(focused_im_context, "commit", string);
          maliit_context_complete_commit_string(obj, invocation);
-+        if (string && *string && g_unichar_isspace(g_utf8_get_char(g_utf8_find_prev_char(string, string + strlen(string)))) )
++        if (string && *string && (g_unichar_isalpha(g_utf8_get_char(g_utf8_find_prev_char(string, string + strlen(string)))) || g_unichar_isspace(g_utf8_get_char(g_utf8_find_prev_char(string, string + strlen(string)))) ) )
 +            maliit_im_context_reset(GTK_IM_CONTEXT(im_context));
          return TRUE;
      }
