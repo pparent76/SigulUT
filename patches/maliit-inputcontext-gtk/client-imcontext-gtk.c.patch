@@ -45,15 +45,16 @@ index e26ce37..40e900d 100644
      // TODO: anything else than call "activateContext" and "showInputMethod" ?
  }
  
-@@ -734,6 +763,7 @@ maliit_im_context_commit_string(MaliitContext *obj,
+@@ -734,6 +763,8 @@ maliit_im_context_commit_string(MaliitContext *obj,
          g_signal_emit_by_name(focused_im_context, "preedit-changed");
          g_signal_emit_by_name(focused_im_context, "commit", string);
          maliit_context_complete_commit_string(obj, invocation);
-+        maliit_im_context_reset(GTK_IM_CONTEXT(im_context));
++        if (string && *string && g_unichar_isspace(g_utf8_get_char(g_utf8_find_prev_char(string, string + strlen(string)))) )
++            maliit_im_context_reset(GTK_IM_CONTEXT(im_context));
          return TRUE;
      }
  
-@@ -896,6 +926,11 @@ maliit_im_context_key_event(MaliitContext *obj,
+@@ -896,6 +927,11 @@ maliit_im_context_key_event(MaliitContext *obj,
  
      if (focused_im_context)
          window = focused_im_context->client_window;
