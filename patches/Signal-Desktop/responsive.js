@@ -59,7 +59,7 @@ b.id = "gear";
 b.innerHTML = `<svg viewBox="0 0 24 24" width="30" fill="currentColor">
   <path d="M19.4 13a7.8 7.8 0 0 0 .1-1 7.8 7.8 0 0 0-.1-1l2.1-1.6-2-3.4-2.5 1a8 8 0 0 0-1.7-1L15 3h-4l-.4 2.9a8 8 0 0 0-1.7 1l-2.5-1-2 3.4L6.6 11a7.8 7.8 0 0 0-.1 1 7.8 7.8 0 0 0 .1 1l-2.1 1.6 2 3.4 2.5-1a8 8 0 0 0 1.7 1l.4 2.9h4l.4-2.9a8 8 0 0 0 1.7-1l2.5 1 2-3.4zM13 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
 </svg>`;
-b.style.cssText = "position:fixed;right:5px;top:5px;z-index:999999;width:60px;height:60px;cursor:pointer;color:#000";
+b.style.cssText = "position:fixed;right:5px;top:5px;z-index:999999;width:60px;height:60px;cursor:pointer;color:#000;opacity: 0.7;";
 b.onclick = () => open("https://access-settings", "_blank");
 document.documentElement.append(b);
 }
@@ -81,6 +81,7 @@ function showNotificationMessage() {
     text-align: center;
     font-family: sans-serif;
     color: black;
+    opacity: 0.7;
   `;
 
   const bell = document.createElement("div");
@@ -101,6 +102,7 @@ function showNotificationMessage() {
     margin-bottom: 8px;
     line-height: 0;
     color: black;
+    opacity: 0.7;
   `;
 
   const text = document.createElement("div");
@@ -213,6 +215,7 @@ function main(){
   
   try{
   addCss(".NavSidebar { transition: transform 0.25s ease-in-out !important ; min-width: 100% !important; position: absolute; z-index:1000; }")
+  addCss(".module-ConversationHeader__header__info__subtitle * { text-overflow: ellipsis !important; min-width: 0; white-space: nowrap; overflow: hidden; }")
   document.documentElement.style.setProperty("--axo-scrollbar-gutter-thin-vertical","6px")
   addCss(".module-timeline__messages__container:not(:hover) {scrollbar-color: transparent transparent;}")
   addCss(".module-timeline__messages__container{ scrollbar-width: thin !important ; }");
