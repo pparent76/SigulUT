@@ -36,7 +36,7 @@ index e26ce37..40e900d 100644
  
  static GType _maliit_im_context_type = 0;
  static GtkIMContextClass *parent_class = NULL;
-@@ -378,6 +405,8 @@ maliit_im_context_focus_in(GtkIMContext *context)
+@@ -378,6 +405,8 @@
          g_clear_error(&error);
      }
  
@@ -45,16 +45,27 @@ index e26ce37..40e900d 100644
      // TODO: anything else than call "activateContext" and "showInputMethod" ?
  }
  
-@@ -734,6 +763,8 @@ maliit_im_context_commit_string(MaliitContext *obj,
+@@ -460,6 +489,10 @@
+ 
+     if (focused_im_context != im_context)
+         maliit_im_context_focus_in(context);
++    
++    if (event->type == GDK_KEY_PRESS && event->keyval == XK_BackSpace &&
++        (!im_context->preedit_str || !im_context->preedit_str[0]))
++        maliit_server_call_reset_sync(get_server(im_context), NULL, NULL);
+ 
+     if ((event->state & IM_FORWARD_MASK) || !redirect_keys) {
+         GtkIMContext *slave = maliit_im_context_get_slave_imcontext();
+@@ -734,6 +767,8 @@
          g_signal_emit_by_name(focused_im_context, "preedit-changed");
          g_signal_emit_by_name(focused_im_context, "commit", string);
          maliit_context_complete_commit_string(obj, invocation);
-+        if (string && *string && (g_unichar_isalpha(g_utf8_get_char(g_utf8_find_prev_char(string, string + strlen(string)))) || g_unichar_isspace(g_utf8_get_char(g_utf8_find_prev_char(string, string + strlen(string)))) ) )
-+            maliit_im_context_reset(GTK_IM_CONTEXT(im_context));
++        if (string && (! *string || (g_unichar_isalpha(g_utf8_get_char(g_utf8_find_prev_char(string, string + strlen(string)))) || g_unichar_isspace(g_utf8_get_char(g_utf8_find_prev_char(string, string + strlen(string)))) ) ) )
++             maliit_im_context_reset(GTK_IM_CONTEXT(im_context));
          return TRUE;
      }
  
-@@ -896,6 +927,11 @@ maliit_im_context_key_event(MaliitContext *obj,
+@@ -896,6 +931,11 @@
  
      if (focused_im_context)
          window = focused_im_context->client_window;
@@ -66,3 +77,4 @@ index e26ce37..40e900d 100644
  
      event = qt_key_event_to_gdk(type, key, modifiers, text, window);
      if (!event)
+
