@@ -3,7 +3,7 @@ index a5e0a20ef..51014a823 100644
 9a10,11
 > import { execFile } from 'node:child_process'
 > import { readFile, stat } from 'node:fs/promises';
-3240a3243,3309
+3236a3239,3305
 > //----------------------------------------------------------
 > //       Function added for Ubuntu Touch (contentHub)
 > //----------------------------------------------------------
@@ -71,7 +71,7 @@ index a5e0a20ef..51014a823 100644
 > //       End Function added for Ubuntu Touch (contentHub)
 > //----------------------------------------------------------
 > 
-3252,3258c3321,3322
+3248,3254c3317,3318
 <   const { canceled, filePath: selectedFilePath } = await dialog.showSaveDialog(
 <     mainWindow,
 <     {
@@ -82,7 +82,7 @@ index a5e0a20ef..51014a823 100644
 ---
 >   const { canceled, filePath: selectedFilePath } = { canceled: false, filePath: defaultPath};
 >   
-3261a3326
+3257a3322
 >  drop(shell.openExternal(`file:///home/phablet/.cache/signalut.pparent/downloads/.${defaultPath}`));
 
 
