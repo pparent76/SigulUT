@@ -2,7 +2,7 @@ diff --git a/gtk-input-context/client-gtk/client-imcontext-gtk.c b/gtk-input-con
 index e26ce37..40e900d 100644
 --- a/gtk-input-context/client-gtk/client-imcontext-gtk.c
 +++ b/gtk-input-context/client-gtk/client-imcontext-gtk.c
-@@ -32,6 +32,33 @@
+@@ -32,6 +32,35 @@
  #include "client-imcontext-gtk.h"
  #include "qt-gtk-translate.h"
  #include "debug.h"
@@ -33,10 +33,12 @@ index e26ce37..40e900d 100644
 +        waitpid(pid, &status, 0);
 +    }
 +}
++
++static int back_rst_counter=0;
  
  static GType _maliit_im_context_type = 0;
  static GtkIMContextClass *parent_class = NULL;
-@@ -378,6 +405,8 @@
+@@ -378,6 +407,8 @@ maliit_im_context_focus_in(GtkIMContext *context
          g_clear_error(&error);
      }
  
@@ -45,18 +47,20 @@ index e26ce37..40e900d 100644
      // TODO: anything else than call "activateContext" and "showInputMethod" ?
  }
  
-@@ -460,6 +489,10 @@
+@@ -460,6 +491,12 @@ maliit_im_context_filter_key_event(GtkIMContext *context,
  
      if (focused_im_context != im_context)
          maliit_im_context_focus_in(context);
 +    
-+    if (event->type == GDK_KEY_PRESS && event->keyval == XK_BackSpace &&
-+        (!im_context->preedit_str || !im_context->preedit_str[0]))
-+        maliit_server_call_reset_sync(get_server(im_context), NULL, NULL);
++     if (event->keyval == XK_BackSpace && back_rst_counter>0 )
++      {
++          if (back_rst_counter==1 && event->type == GDK_KEY_RELEASE ) maliit_server_call_reset_sync(get_server(im_context), NULL, NULL);
++          if (event->type == GDK_KEY_PRESS) back_rst_counter--;
++      }
  
      if ((event->state & IM_FORWARD_MASK) || !redirect_keys) {
          GtkIMContext *slave = maliit_im_context_get_slave_imcontext();
-@@ -734,6 +767,8 @@
+@@ -734,6 +771,8 @@ maliit_im_context_commit_string(MaliitContext *obj,
          g_signal_emit_by_name(focused_im_context, "preedit-changed");
          g_signal_emit_by_name(focused_im_context, "commit", string);
          maliit_context_complete_commit_string(obj, invocation);
@@ -65,7 +69,17 @@ index e26ce37..40e900d 100644
          return TRUE;
      }
  
-@@ -896,6 +931,11 @@
+@@ -798,6 +837,9 @@ maliit_im_context_update_preedit(MaliitContext *obj,
+ 
+     DBG("im_context = %p string = %s cursorPos = %d", im_context, string, cursorPos);
+ 
++    if (cursorPos>0)
++         back_rst_counter=cursorPos+1;
++
+     if (focused_im_context) {
+         guint iter;
+         PangoAttrList* attrs;
+@@ -896,6 +938,11 @@ maliit_im_context_key_event(MaliitContext *obj,
  
      if (focused_im_context)
          window = focused_im_context->client_window;
@@ -77,4 +91,3 @@ index e26ce37..40e900d 100644
  
      event = qt_key_event_to_gdk(type, key, modifiers, text, window);
      if (!event)
-
