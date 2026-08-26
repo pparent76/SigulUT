@@ -122,7 +122,6 @@ export LD=ld
     pnpm run build
   else
       echo "--->Re-Build Signal"
-     
      PATH=$PATH:${BUILD_DIR}/.clickable/home/.local/share/pnpm/
      source ${BUILD_DIR}/.clickable/home/.bashrc
      export NVM_DIR="$HOME/.nvm"
@@ -158,6 +157,12 @@ cd build
 cmake ..
 make
 
+rm -rvf  ${BUILD_DIR}/restart-app/
+cp -r ${ROOT}/utils/restart-app/ ${BUILD_DIR}/
+cd ${BUILD_DIR}/restart-app/
+unset PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig
+aarch64-linux-gnu-gcc -Wall -Wextra restart-app.c -o restart-app $(pkg-config --cflags --libs gio-2.0)
 # ===================================
 # STEP 5: BUILD QML modules
 # ===================================
@@ -328,6 +333,7 @@ cp ${ROOT}/pushexec "$INSTALL_DIR/"
 cp ${ROOT}/push-apparmor.json "$INSTALL_DIR/"
 cp ${ROOT}/signalut-push.apparmor "$INSTALL_DIR/"
 cp ${ROOT}/signalut-push-helper.json "$INSTALL_DIR/"
+cp ${ROOT}/signalut.url-dispatcher "$INSTALL_DIR/"
 
 echo "Copying utils..."
 mkdir -p "$INSTALL_DIR/utils/"
@@ -338,6 +344,8 @@ cp ${ROOT}/utils/get-scale.sh "$INSTALL_DIR/utils/"
 cp ${ROOT}/utils/select-file.sh "$INSTALL_DIR/utils/"
 cp ${BUILD_DIR}/xdg-open/build/xdg-open $INSTALL_DIR/bin/
 cp ${BUILD_DIR}/placeholder-killer/build/placeholder-killer $INSTALL_DIR/bin/
+mkdir -p $INSTALL_DIR/utils/restart-app/
+cp ${BUILD_DIR}/restart-app/restart-app $INSTALL_DIR/utils/restart-app/
 mkdir $INSTALL_DIR/utils/download-helper/
 cp -r ${BUILD_DIR}/download-helper/qml $INSTALL_DIR/utils/download-helper/
 

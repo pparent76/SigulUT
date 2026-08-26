@@ -1,7 +1,19 @@
 #!/usr/bin/python3
-
 import sys
+import subprocess
+import time
+from pathlib import Path
 
 f1, f2 = sys.argv[1:3]
 
-open(f2, "w").write(open(f1).read()) 
+with open(f1, "r") as src:
+    contenu = src.read()
+
+if contenu == '{"message": "launch", "notification":{}}':
+    base_dir = Path(__file__).resolve().parent
+    xdg_open = base_dir / "bin" / "xdg-open"
+    time.sleep(0.1)
+    subprocess.run([str(xdg_open), "app://signalut.pparent"])
+else:
+    with open(f2, "w") as dst:
+        dst.write(contenu)

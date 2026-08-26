@@ -6,7 +6,8 @@
   "hooks": {
     "signallauncher": {
       "apparmor": "signalut.apparmor",
-      "desktop": "signalut.desktop"
+      "desktop": "signalut.desktop",
+      "urls": "signalut.url-dispatcher"
     },
     "push": {
       "apparmor": "signalut-push.apparmor",

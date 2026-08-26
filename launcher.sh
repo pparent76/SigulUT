@@ -43,6 +43,9 @@ if [ "$?" -eq "0" ]&& [ "$hasUpdateTo240420" = "" ]; then
         echo "[UpdateSettings]"  > /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
         echo "hasUpdateTo240420=yes" >> /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
 fi
+
+##################################################################################################
+#          Handle Microphone permission dialog (also calibrates Keyboard height)
 ##################################################################################################
 
 #Read micstate in conf
@@ -51,26 +54,21 @@ while read p; do
   if [[ "$p" == *"keyboardHeight="* ]]; then   keyboardHeight="${p#keyboardHeight=}" ; fi
 done <  /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
 
-
-if { [[ "$micstate" != *"microState=1"* ]] && [[ "$micstate" != *"microState=4"* ]]; } || \
-   { [[ "$keyboardHeight" = "" ]] || [[ "$keyboardHeight" -lt "100" ]] || [[ "$keyboardHeight" -gt "4000" ]]; }; then
-        xdotool sleep 2;
-        qmlscene utils/mic-permission-requester/Main.qml -I utils/mic-permission-requester/ &
-        xdotool sleep 5;
-        while true; do
-            xdotool sleep 1;
-            while read p; do
-                if [[ "$p" == *"microState="* ]]; then  micstate=$p; fi
-            done <  /home/phablet/.config/signalut.pparent/signalut.pparent/signalut.pparent.conf 
-            echo "$micstate"
-            if  [ "$micstate" == "microState=1" ]||  [ "$micstate" == "microState=2" ]; then
-                break;
+if [ "$1" = "" ]; then
+    if { [[ "$micstate" != *"microState=1"* ]] && [[ "$micstate" != *"microState=4"* ]]; } || \
+    { [[ "$keyboardHeight" = "" ]] || [[ "$keyboardHeight" -lt "100" ]] || [[ "$keyboardHeight" -gt "4000" ]]; }; then
+            xdotool sleep 2;
+            qmlscene utils/mic-permission-requester/Main.qml -I utils/mic-permission-requester/ 
+            #Restart the app if qmlscene exits with code 5 (Mic permission dialog wants to start signal)
+            if [ "$?" -eq "5" ]; then 
+                exec utils/restart-app/restart-app
+            else
+                exit 0
             fi
-            if  [ "$micstate" == "microState=4" ]; then
-                    break;
-            fi
-        done
+    fi
 fi
+################################################################################################
+
 for file in /home/phablet/.cache/signalut.pparent/downloads/* ; do
     utils/rm.sh $file
 done

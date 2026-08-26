@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Sigul UT
 Comment=Sigul UT Launcher
-Exec=./launcher.sh
+Exec=./launcher.sh %u
 Terminal=false
 Type=Application
 Icon=icon.png
