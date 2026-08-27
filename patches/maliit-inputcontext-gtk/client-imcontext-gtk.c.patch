@@ -97,7 +97,7 @@ index e26ce37..40e900d 100644
 +        ts_last_back_rst=g_get_real_time();
 +    }
 +    
-+    else if ( event->keyval == XK_BackSpace && g_get_real_time()-ts_last_back_rst< 500000 )
++    else if ( event->type == GDK_KEY_PRESS && event->keyval == XK_BackSpace && g_get_real_time()-ts_last_back_rst< 500000 )
 +    {
 +        return FALSE;
 +    }
