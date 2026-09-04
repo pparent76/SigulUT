@@ -18,7 +18,7 @@ INSTALL_DIR="${BUILD_DIR}/install"
 echo "[1/10] Download Signal-Desktop from github"
 
 cd ${BUILD_DIR}
-signal_download_url=https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v8.24.1.tar.gz
+signal_download_url=https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v8.26.0.tar.gz
 
 if [ ! -e "Signal-Desktop" ]; then
     mkdir -p "Signal-Desktop"
@@ -84,6 +84,7 @@ export LD=ld
     node -v
     
     echo "---> Download pnpm from get.pnpm.io"
+    export PNPM_VERSION=11.24.0
     curl -fsSL https://get.pnpm.io/install.sh | env SHELL=bash sh -
     source ${BUILD_DIR}/.clickable/home/.bashrc
 
