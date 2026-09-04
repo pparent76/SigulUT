@@ -56,10 +56,10 @@ var firstChatLoad=1;
 function showGear() {
 const b = document.createElement("button");
 b.id = "gear";
-b.innerHTML = `<svg viewBox="0 0 24 24" width="30" fill="#FFFFFF">
+b.innerHTML = `<svg viewBox="0 0 24 24" width="30" fill="currentColor">
   <path d="M19.4 13a7.8 7.8 0 0 0 .1-1 7.8 7.8 0 0 0-.1-1l2.1-1.6-2-3.4-2.5 1a8 8 0 0 0-1.7-1L15 3h-4l-.4 2.9a8 8 0 0 0-1.7 1l-2.5-1-2 3.4L6.6 11a7.8 7.8 0 0 0-.1 1 7.8 7.8 0 0 0 .1 1l-2.1 1.6 2 3.4 2.5-1a8 8 0 0 0 1.7 1l.4 2.9h4l.4-2.9a8 8 0 0 0 1.7-1l2.5 1 2-3.4zM13 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
 </svg>`;
-b.style.cssText = "position:fixed;right:5px;top:5px;z-index:999999;width:60px;height:60px;cursor:pointer;color:#000;opacity: 0.7;fill:var(--axo-color-label-primary);";
+b.style.cssText = "position:fixed;right:5px;top:5px;z-index:999999;width:60px;height:60px;cursor:pointer;opacity: 0.7;color:var(--axo-color-label-primary);";
 b.onclick = () => open("https://access-settings", "_blank");
 document.documentElement.append(b);
 }
@@ -92,7 +92,7 @@ function showNotificationMessage() {
       height="28"
       viewBox="0 0 24 24"
       aria-hidden="true"
-      fill="#FFFFFF";
+      fill="currentColor";
     >
       <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6v-5a7 7 0 0 0-5-6.71V3a2 2 0 0 0-4 0v1.29A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z"/>
     </svg>
@@ -101,9 +101,8 @@ function showNotificationMessage() {
   bell.style.cssText = `
     margin-bottom: 8px;
     line-height: 0;
-    color: black;
     opacity: 0.7;
-    fill:var(--axo-color-label-primary);
+    color:var(--axo-color-label-primary);
   `;
 
   const text = document.createElement("div");
