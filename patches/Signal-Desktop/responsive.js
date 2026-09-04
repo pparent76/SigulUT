@@ -56,10 +56,10 @@ var firstChatLoad=1;
 function showGear() {
 const b = document.createElement("button");
 b.id = "gear";
-b.innerHTML = `<svg viewBox="0 0 24 24" width="30" fill="currentColor">
+b.innerHTML = `<svg viewBox="0 0 24 24" width="30" fill="#FFFFFF">
   <path d="M19.4 13a7.8 7.8 0 0 0 .1-1 7.8 7.8 0 0 0-.1-1l2.1-1.6-2-3.4-2.5 1a8 8 0 0 0-1.7-1L15 3h-4l-.4 2.9a8 8 0 0 0-1.7 1l-2.5-1-2 3.4L6.6 11a7.8 7.8 0 0 0-.1 1 7.8 7.8 0 0 0 .1 1l-2.1 1.6 2 3.4 2.5-1a8 8 0 0 0 1.7 1l.4 2.9h4l.4-2.9a8 8 0 0 0 1.7-1l2.5 1 2-3.4zM13 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
 </svg>`;
-b.style.cssText = "position:fixed;right:5px;top:5px;z-index:999999;width:60px;height:60px;cursor:pointer;color:#000;opacity: 0.7;";
+b.style.cssText = "position:fixed;right:5px;top:5px;z-index:999999;width:60px;height:60px;cursor:pointer;color:#000;opacity: 0.7;fill:var(--axo-color-label-primary);";
 b.onclick = () => open("https://access-settings", "_blank");
 document.documentElement.append(b);
 }
@@ -80,7 +80,7 @@ function showNotificationMessage() {
     z-index: 999999;
     text-align: center;
     font-family: sans-serif;
-    color: black;
+    color: var(--axo-color-label-primary);
     opacity: 0.7;
   `;
 
@@ -92,7 +92,7 @@ function showNotificationMessage() {
       height="28"
       viewBox="0 0 24 24"
       aria-hidden="true"
-      fill="currentColor"
+      fill="#FFFFFF";
     >
       <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6v-5a7 7 0 0 0-5-6.71V3a2 2 0 0 0-4 0v1.29A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z"/>
     </svg>
@@ -103,6 +103,7 @@ function showNotificationMessage() {
     line-height: 0;
     color: black;
     opacity: 0.7;
+    fill:var(--axo-color-label-primary);
   `;
 
   const text = document.createElement("div");
@@ -381,7 +382,7 @@ window.addEventListener("click", function() {
 //----------------------------------------------------------------------------
 function addBackButtonToChatView(){
 
-    addCss(".back_button span { display:block; height: 100%; width: 100%;}.back_button {  z-index:200; width:37px; height:45px; } html[dir] .back_button { border-radius:50%; } html[dir=ltr] .back_button { right:11px } html[dir=rtl] .back_button { left:11px } .back_button path { fill:var(--panel-header-icon); fill-opacity:1 } .svg_back { transform: rotate(90deg); height: 100%;}");
+    addCss(".back_button span { display:block; height: 100%; width: 100%;}.back_button {  z-index:200; width:37px; height:45px; } html[dir] .back_button { border-radius:50%; } html[dir=ltr] .back_button { right:11px } html[dir=rtl] .back_button { left:11px } .back_button path { fill:var(--axo-color-label-primary); fill-opacity:1;  } .svg_back { transform: rotate(90deg); height: 100%;}");
     
     var newHTML         = document.createElement('div');
     newHTML.className += "back_button";
@@ -395,7 +396,7 @@ function addBackButtonToChatView(){
 
 function addBackButtonToPreferences(){
 
-    addCss(".back_button_pref span { display:block; height: 100%; width: 100%;}.back_button_pref {  z-index:200; width:37px; height:45px; } html[dir] .back_button_pref { border-radius:50%; margin-left: 3vw;} html[dir=ltr] .back_button_pref { right:11px } html[dir=rtl] .back_button_pref { left:11px } .back_button_pref path { fill:var(--panel-header-icon); fill-opacity:1 } .svg_back { transform: rotate(90deg); height: 100%;}");
+    addCss(".back_button_pref span { display:block; height: 100%; width: 100%;}.back_button_pref {  z-index:200; width:37px; height:45px; } html[dir] .back_button_pref { border-radius:50%; margin-left: 3vw;} html[dir=ltr] .back_button_pref { right:11px } html[dir=rtl] .back_button_pref { left:11px } .back_button_pref path { fill:var(--axo-color-label-primary); fill-opacity:1 } .svg_back { transform: rotate(90deg); height: 100%;}");
     
     var newHTML         = document.createElement('div');
     newHTML.className += "back_button_pref";
