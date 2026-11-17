@@ -18,7 +18,7 @@ INSTALL_DIR="${BUILD_DIR}/install"
 echo "[1/10] Download Signal-Desktop from github"
 
 cd ${BUILD_DIR}
-signal_download_url=https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v8.26.0.tar.gz
+signal_download_url=https://github.com/signalapp/Signal-Desktop/archive/refs/tags/v8.35.0.tar.gz
 
 if [ ! -e "Signal-Desktop" ]; then
     mkdir -p "Signal-Desktop"
@@ -60,14 +60,7 @@ fi
 # ==============================
 echo "[3/10] Building Signal-Desktop..."
 
-oldcc=$CC;
-oldccx=$CXX;
-oldar=$AR;
-oldld=$LD;
-export CC=gcc 
-export CXX=g++ 
-export AR=ar 
-export LD=ld
+
 
  if [ ! -e "${BUILD_DIR}/Signal-Desktop/release/linux-arm64-unpacked/" ]; then
     PATH=$PATH:${BUILD_DIR}/.clickable/home/.local/share/pnpm/
@@ -83,30 +76,40 @@ export LD=ld
     nvm use 24.15.0
     node -v
     
-    echo "---> Download pnpm from get.pnpm.io"
-    export PNPM_VERSION=11.24.0
-    curl -fsSL https://get.pnpm.io/install.sh | env SHELL=bash sh -
-    source ${BUILD_DIR}/.clickable/home/.bashrc
+    echo "---> Installing pnpm 12.21.0 with npm"
+    npm install -g pnpm@12.21.0 || exit 1
+    hash -r
 
     pnpm -v
   
     echo "--->dlx node-gyp"
     pnpm dlx node-gyp --version
-  
+    
+    echo "--->Install"
+    
+    oldcc=$CC;
+    oldccx=$CXX;
+    oldar=$AR;
+    oldld=$LD;
+    export CC=gcc 
+    export CXX=g++ 
+    export AR=ar 
+    export LD=ld
+    
+    sleep 5
+    pnpm install
+    
+    export CC=$oldcc
+    export CXX=$oldccx
+    export AR=$oldar
+    export LD=$oldld
+
+    
     export npm_config_arch=arm64
     export npm_config_target_arch=arm64
     export npm_config_target_platform=linux
     export ESBUILD_ARCH=arm64
     export SIGNAL_ENV=release
-    
-    echo "--->Install"
-    sleep 5
-    pnpm install      
-    
-    FS_EXTRA_DIR="$(find node_modules/.pnpm -maxdepth 1 -type d -name 'fs-extra@11.3.4*' | head -n 1)/node_modules/fs-extra"    
-    echo "--->Patching fs-extra in $FS_EXTRA_DIR"   
-    patch -d "$FS_EXTRA_DIR" -p1 < ${ROOT}/patches/Signal-Desktop/fs-extra+11.3.4.patch
- 
 
     echo "--->Prepare"
     pnpm run prepare-linux-build deb arm64
@@ -118,9 +121,25 @@ export LD=ld
     cd ..
     
        
-    echo "--->Build Signal"
+    echo "--->generate"
+    
+    npm_config_arch=x64 \
+    npm_config_target_arch=x64 \
+    npm_config_platform=linux \
+    pnpm run generate
+    pnpm run build:rolldown:prod 
+    
     sleep 5;
-    pnpm run build
+
+    echo "---> Package Signal Desktop for ARM64"
+
+    export npm_config_arch=arm64
+    export npm_config_target_arch=arm64
+    export npm_config_target_platform=linux
+    export ESBUILD_ARCH=arm64
+    pnpm run build:release --linux deb --arm64 --publish never
+#     sleep 5;
+#     pnpm run build
   else
       echo "--->Re-Build Signal"
      PATH=$PATH:${BUILD_DIR}/.clickable/home/.local/share/pnpm/
@@ -132,12 +151,6 @@ export LD=ld
     
      pnpm run build
   fi
-
-export CC=$oldcc
-export CXX=$oldccx
-export AR=$oldar
-export LD=$oldld
-
 
 # ===================================
 # STEP 4: BUILD THE FAKE xdg-open

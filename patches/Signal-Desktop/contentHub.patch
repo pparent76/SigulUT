@@ -3,7 +3,7 @@ index a5e0a20ef..51014a823 100644
 9a10,11
 > import { execFile } from 'node:child_process'
 > import { readFile, stat } from 'node:fs/promises';
-3236a3239,3305
+3248a3251,3317
 > //----------------------------------------------------------
 > //       Function added for Ubuntu Touch (contentHub)
 > //----------------------------------------------------------
