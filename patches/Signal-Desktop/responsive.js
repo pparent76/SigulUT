@@ -16,8 +16,8 @@ const X = {
     chatWindow: () => document.querySelector('.Inbox__conversation-stack'),
       chatHeader: () => document.querySelector('.module-ConversationHeader__header'),
       moduleTimelineMessages: () => document.querySelector('.module-timeline__messages__container'),
-    preferenceContentWindow: () => document.querySelector('.Preferences__content'),
-      preferenceContentHeader: () => document.querySelector('.Preferences__title'),
+    preferenceContentWindow: () => document.querySelector('.bg-surface-primary, .Preferences__content'),
+      preferenceContentHeader: () => document.querySelector('.bg-surface-primary header, .Preferences__title--header'),
   //-------------------------------------------------------------------------------------------
 
   upperWrapper: () => document.querySelector('.three'),
@@ -360,7 +360,7 @@ window.addEventListener("click", function() {
     }
   }
  
-   if ( lastClickEl.classList.contains('Preferences__button') || lastClickEl.classList.contains('Preferences__profile-chip__button') )
+   if ( lastClickEl?.closest('.Preferences__scroll-area') !== null )
    {
      console.log("menu pref click");
      showPreferenceContentWindow();
